@@ -1,11 +1,18 @@
 import "./App.css";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import BlogList from "./components/BlogList.jsx";
+import BlogPost from "./components/BlogPost.jsx";
+import ErrorPage from "./components/ErrorPage.jsx";
 
-function App() {
+export default function App() {
     return (
-        <>
-            <div>Hello World</div>
-        </>
+        <BrowserRouter>
+            <Routes>
+                <Route path="/" element={<BlogList />} />
+                <Route path="/post/:id" element={<BlogPost />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="*" element={<ErrorPage />} />
+            </Routes>
+        </BrowserRouter>
     );
 }
-
-export default App;
