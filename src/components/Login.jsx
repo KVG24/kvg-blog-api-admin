@@ -72,7 +72,7 @@ const StyledForm = styled.form`
     gap: 1rem;
     justify-content: center;
     align-items: center;
-    border: 1px solid #2d7a85;
+    border: 1px solid #449b9b;
     border-radius: 5px;
     padding: 1rem;
 `;
@@ -90,7 +90,7 @@ const StyledInput = styled.input`
 
 const StyledBtn = styled.button`
     padding: 1rem;
-    background-color: #2d7a85;
+    background-color: #449b9b;
     color: white;
     font-weight: 500;
     border-radius: 5px;
@@ -100,7 +100,7 @@ const StyledBtn = styled.button`
 
     &:hover {
         background-color: white;
-        color: #2d7a85;
+        color: #449b9b;
     }
 `;
 
