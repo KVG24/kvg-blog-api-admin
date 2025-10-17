@@ -19,7 +19,7 @@ export default function BlogPostSkeletonLoader() {
                         $height="30px"
                         $margin="0"
                         $align="flex-start"
-                        $top="-60px"
+                        $top="-70px"
                     />
                     <SkeletonBlock $width="100%" $height="600px" />
                 </TextZone>
@@ -71,6 +71,7 @@ const Container = styled.div`
 `;
 
 const TitleZone = styled.div`
+    border-radius: 5px;
     width: 100%;
     background-color: #3d3d3d;
     display: flex;
@@ -80,6 +81,7 @@ const TitleZone = styled.div`
 `;
 
 const TextZone = styled.div`
+    padding: 1rem;
     width: 100%;
     max-width: 1000px;
     display: flex;

@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import isLoggedIn from "../utils/isLoggedIn";
@@ -7,6 +7,7 @@ export default function Login() {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
+    const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
     const API_URL = import.meta.env.VITE_API_URL;
 
@@ -20,6 +21,7 @@ export default function Login() {
     async function handleSubmit(e) {
         e.preventDefault();
         setError("");
+        setLoading(true);
 
         try {
             const response = await fetch(`${API_URL}/login`, {
@@ -30,10 +32,7 @@ export default function Login() {
                 body: JSON.stringify({ username, password }),
             });
 
-            console.log(response);
-
             if (!response.ok) {
-                console.log(response);
                 throw new Error("Login failed");
             }
 
@@ -42,6 +41,7 @@ export default function Login() {
             navigate("/");
         } catch (err) {
             setError("Login failed");
+            setLoading(false);
         }
     }
 
@@ -64,7 +64,9 @@ export default function Login() {
                     onChange={(e) => setPassword(e.target.value)}
                     required
                 />
-                <StyledBtn type="submit">Login</StyledBtn>
+                <StyledBtn type="submit" disabled={loading}>
+                    {loading ? <Spinner /> : "Login"}
+                </StyledBtn>
             </StyledForm>
         </>
     );
@@ -97,10 +99,13 @@ const StyledInput = styled.input`
 `;
 
 const StyledBtn = styled.button`
+    width: 100%;
+    display: flex;
+    justify-content: center;
     padding: 1rem;
     background-color: #449b9b;
     color: white;
-    font-weight: 500;
+    font-weight: 900;
     border-radius: 5px;
     border: none;
     cursor: pointer;
@@ -116,4 +121,19 @@ const ErrorMsg = styled.p`
     color: #b82525;
     padding: 0;
     margin: 0;
+`;
+
+const spin = keyframes`
+  to {
+    transform: rotate(360deg);
+  }
+`;
+
+const Spinner = styled.div`
+    width: 18px;
+    height: 18px;
+    border: 2px solid #449b9b;
+    border-top: 2px solid transparent;
+    border-radius: 50%;
+    animation: ${spin} 0.6s linear infinite;
 `;

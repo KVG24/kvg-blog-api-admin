@@ -1,8 +1,10 @@
 import styled, { keyframes } from "styled-components";
+import NavigationBar from "./NavigationBar";
 
 export default function BlogListSkeletonLoader() {
     return (
         <>
+            <NavigationBar />
             <TitleZone>
                 <h1>KVG Blogs</h1>
             </TitleZone>
