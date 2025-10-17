@@ -2,6 +2,7 @@ import useFetch from "../hooks/useFetch";
 import BlogListSkeletonLoader from "./BlogListSkeletonLoader";
 import BlogCard from "./BlogCard";
 import styled from "styled-components";
+import NavigationBar from "./NavigationBar";
 
 export default function Login() {
     const BLOG_API = import.meta.env.VITE_API_URL;
@@ -13,24 +14,23 @@ export default function Login() {
 
     return (
         <>
+            <NavigationBar />
             <TitleZone>
                 <h1>KVG Blogs</h1>
             </TitleZone>
             <Container>
                 {data && data.length > 0 ? (
-                    data.map(
-                        (blogpost) =>
-                            blogpost.published && (
-                                <BlogCard
-                                    id={blogpost.id}
-                                    key={blogpost.id}
-                                    title={blogpost.title}
-                                    description={blogpost.description}
-                                    createdAt={blogpost.createdAt}
-                                    updatedAt={blogpost.updatedAt}
-                                />
-                            )
-                    )
+                    data.map((blogpost) => (
+                        <BlogCard
+                            id={blogpost.id}
+                            key={blogpost.id}
+                            title={blogpost.title}
+                            description={blogpost.description}
+                            createdAt={blogpost.createdAt}
+                            updatedAt={blogpost.updatedAt}
+                            published={blogpost.published}
+                        />
+                    ))
                 ) : (
                     <p>No items available</p>
                 )}

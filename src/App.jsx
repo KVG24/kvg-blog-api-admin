@@ -4,13 +4,28 @@ import BlogList from "./components/BlogList.jsx";
 import BlogPost from "./components/BlogPost.jsx";
 import Login from "./components/Login.jsx";
 import ErrorPage from "./components/ErrorPage.jsx";
+import ProtectedRoute from "./components/ProtectedRoute.jsx";
 
 export default function App() {
     return (
         <BrowserRouter>
             <Routes>
-                <Route path="/" element={<BlogList />} />
-                <Route path="/post/:id" element={<BlogPost />} />
+                <Route
+                    path="/"
+                    element={
+                        <ProtectedRoute>
+                            <BlogList />
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="/post/:id"
+                    element={
+                        <ProtectedRoute>
+                            <BlogPost />
+                        </ProtectedRoute>
+                    }
+                />
                 <Route path="/login" element={<Login />} />
                 <Route path="*" element={<ErrorPage />} />
             </Routes>

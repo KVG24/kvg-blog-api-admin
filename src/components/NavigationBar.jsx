@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import isLoggedIn from "../utils/isLoggedIn";
 
 export default function NavigationBar() {
     return (
@@ -7,8 +8,29 @@ export default function NavigationBar() {
             <StyledNav>
                 <ul style={{ listStyleType: "none" }}>
                     <li>
-                        <StyledLink to="/">Back </StyledLink>
+                        <StyledLink $left="1rem" to="/">
+                            Back
+                        </StyledLink>
                     </li>
+                    {!isLoggedIn ? (
+                        <li>
+                            <StyledLink $right="1rem" to="/login">
+                                Login
+                            </StyledLink>
+                        </li>
+                    ) : (
+                        <li>
+                            <StyledLink
+                                $right="1rem"
+                                to="/login"
+                                onClick={() => {
+                                    localStorage.removeItem("jwtToken");
+                                }}
+                            >
+                                Log Out
+                            </StyledLink>
+                        </li>
+                    )}
                 </ul>
             </StyledNav>
         </>
@@ -22,6 +44,11 @@ const StyledLink = styled(Link)`
     background-color: #449b9b;
     text-decoration: none;
     transition: all 0.1s ease-in-out;
+    font-weight: 700;
+    position: absolute;
+    top: 1rem;
+    left: ${(props) => props.$left || "none"};
+    right: ${(props) => props.$right || "none"};
 
     @media (max-width: 500px) {
         padding: 0.2rem 0.5rem;
@@ -35,9 +62,6 @@ const StyledLink = styled(Link)`
 
 const StyledNav = styled.nav`
     z-index: 100;
-    position: absolute;
-    top: 1rem;
-    left: 0.5rem;
 
     ul {
         padding: 0;

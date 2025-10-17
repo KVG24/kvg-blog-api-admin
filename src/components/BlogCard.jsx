@@ -7,6 +7,7 @@ export default function BlogCard({
     description,
     createdAt,
     updatedAt,
+    published,
 }) {
     function convertDate(date) {
         return new Date(date).toLocaleString("en-US", {
@@ -33,6 +34,11 @@ export default function BlogCard({
                         <p>Updated: {convertDate(updatedAt)}</p>
                     )}
                 </Dates>
+                {published ? (
+                    <Status $published>Published</Status>
+                ) : (
+                    <Status>Unpublished</Status>
+                )}
             </Container>
         </Link>
     );
@@ -71,4 +77,13 @@ const Dates = styled.div`
     left: 10px;
     display: flex;
     flex-direction: column;
+`;
+
+const Status = styled.p`
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    padding: 0.2rem 0.5rem;
+    border-radius: 5px;
+    background-color: ${(props) => (props.$published ? "#115320" : "#681010")};
 `;

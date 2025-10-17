@@ -1,6 +1,7 @@
 import styled from "styled-components";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import isLoggedIn from "../utils/isLoggedIn";
 
 export default function Login() {
     const [username, setUsername] = useState("");
@@ -8,6 +9,13 @@ export default function Login() {
     const [error, setError] = useState("");
     const navigate = useNavigate();
     const API_URL = import.meta.env.VITE_API_URL;
+
+    // Redirect logged in user
+    useEffect(() => {
+        if (isLoggedIn()) {
+            navigate("/");
+        }
+    }, []);
 
     async function handleSubmit(e) {
         e.preventDefault();
