@@ -6,7 +6,7 @@ export default function BlogListSkeletonLoader() {
         <>
             <NavigationBar />
             <TitleZone>
-                <h1>KVG Blogs</h1>
+                <h1>KVG Blog</h1>
             </TitleZone>
             <Container>
                 {Array.from({ length: 6 }).map((_, i) => (
@@ -32,6 +32,7 @@ const TitleZone = styled.div`
     justify-content: center;
     align-items: center;
     padding: 2rem 0;
+    border-radius: 5px;
 `;
 
 const Container = styled.div`

@@ -2,26 +2,26 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 import isLoggedIn from "../utils/isLoggedIn";
 
-export default function NavigationBar() {
+export default function NavigationBar({ mode }) {
     return (
         <>
             <StyledNav>
-                <ul style={{ listStyleType: "none" }}>
+                <LinkContainer>
                     <li>
-                        <StyledLink $left="1rem" to="/">
-                            Back
-                        </StyledLink>
+                        <StyledLink to="/">Back</StyledLink>
                     </li>
+                    {mode !== "editor" && (
+                        <li>
+                            <StyledLink to="/create">Create Post</StyledLink>
+                        </li>
+                    )}
                     {!isLoggedIn ? (
                         <li>
-                            <StyledLink $right="1rem" to="/login">
-                                Login
-                            </StyledLink>
+                            <StyledLink to="/login">Login</StyledLink>
                         </li>
                     ) : (
                         <li>
                             <StyledLink
-                                $right="1rem"
                                 to="/login"
                                 onClick={() => {
                                     localStorage.removeItem("jwtToken");
@@ -31,11 +31,22 @@ export default function NavigationBar() {
                             </StyledLink>
                         </li>
                     )}
-                </ul>
+                </LinkContainer>
             </StyledNav>
         </>
     );
 }
+
+const LinkContainer = styled.ul`
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    width: calc(100% - 2rem);
+    position: absolute;
+    top: 1.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+`;
 
 const StyledLink = styled(Link)`
     padding: 0.5rem 1rem;
@@ -45,10 +56,6 @@ const StyledLink = styled(Link)`
     text-decoration: none;
     transition: all 0.1s ease-in-out;
     font-weight: 700;
-    position: absolute;
-    top: 1rem;
-    left: ${(props) => props.$left || "none"};
-    right: ${(props) => props.$right || "none"};
 
     @media (max-width: 500px) {
         padding: 0.2rem 0.5rem;

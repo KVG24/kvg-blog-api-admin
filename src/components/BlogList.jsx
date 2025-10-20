@@ -16,7 +16,7 @@ export default function Login() {
         <>
             <NavigationBar />
             <TitleZone>
-                <h1>KVG Blogs</h1>
+                <h1>KVG Blog</h1>
             </TitleZone>
             <Container>
                 {data && data.length > 0 ? (
@@ -57,6 +57,7 @@ const TitleZone = styled.div`
     justify-content: center;
     align-items: center;
     padding: 2rem 0;
+    border-radius: 5px;
 `;
 
 const Error = styled.p`
