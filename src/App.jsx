@@ -5,7 +5,7 @@ import BlogPost from "./components/BlogPost.jsx";
 import Login from "./components/Login.jsx";
 import ErrorPage from "./components/ErrorPage.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
-import EditorComponent from "./components/PostEditor.jsx";
+import PostEditor from "./components/PostEditor.jsx";
 
 export default function App() {
     return (
@@ -31,7 +31,7 @@ export default function App() {
                     path="/create"
                     element={
                         <ProtectedRoute>
-                            <EditorComponent />
+                            <PostEditor />
                         </ProtectedRoute>
                     }
                 />
