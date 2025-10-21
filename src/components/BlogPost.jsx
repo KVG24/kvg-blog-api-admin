@@ -3,11 +3,12 @@ import styled from "styled-components";
 import useFetch from "../hooks/useFetch";
 import NavigationBar from "./NavigationBar";
 import BlogPostSkeletonLoader from "./BlogPostSkeletonLoader";
+import DOMPurify from "dompurify";
+
+const BLOG_API = import.meta.env.VITE_API_URL;
 
 export default function BlogPost() {
-    const BLOG_API = import.meta.env.VITE_API_URL;
     const { id } = useParams();
-
     const { data, loading, error } = useFetch(`${BLOG_API}/posts/${id}`);
 
     function convertDate(date) {
@@ -39,13 +40,11 @@ export default function BlogPost() {
                                 <p>Updated: {convertDate(data.updatedAt)}</p>
                             )}
                     </Dates>
-                    {data.content
-                        .split("\n")
-                        .map((paragraph, index) =>
-                            paragraph.trim() ? (
-                                <Paragraph key={index}>{paragraph}</Paragraph>
-                            ) : null
-                        )}
+                    <div
+                        dangerouslySetInnerHTML={{
+                            __html: DOMPurify.sanitize(data.content),
+                        }}
+                    />
                 </TextZone>
             </Container>
         </>
@@ -90,9 +89,6 @@ const Dates = styled.div`
 const TextZone = styled.div`
     padding: 1rem;
     max-width: 1000px;
+    width: 100%;
     position: relative;
-`;
-
-const Paragraph = styled.p`
-    margin-bottom: 1rem;
 `;

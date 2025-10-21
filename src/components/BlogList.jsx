@@ -4,9 +4,9 @@ import BlogCard from "./BlogCard";
 import styled from "styled-components";
 import NavigationBar from "./NavigationBar";
 
-export default function Login() {
-    const BLOG_API = import.meta.env.VITE_API_URL;
+const BLOG_API = import.meta.env.VITE_API_URL;
 
+export default function Login() {
     const { data, loading, error } = useFetch(`${BLOG_API}/posts`);
 
     if (loading) return <BlogListSkeletonLoader />;

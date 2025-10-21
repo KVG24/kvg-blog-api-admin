@@ -4,13 +4,15 @@ import NavigationBar from "./NavigationBar";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 
+const TINYMCE_API_KEY = import.meta.env.VITE_TINYMCE_API_KEY;
+const BLOG_API = import.meta.env.VITE_API_URL;
+
 export default function PostEditor() {
     const [title, setTitle] = useState("");
     const [published, setPublished] = useState("on");
     const [description, setDescription] = useState("");
     const [content, setContent] = useState("");
     const editorRef = useRef(null);
-    const API_KEY = import.meta.env.VITE_TINYMCE_API_KEY;
     const navigate = useNavigate();
 
     const handleSubmit = async () => {
@@ -22,7 +24,7 @@ export default function PostEditor() {
         };
 
         try {
-            const response = await fetch("http://localhost:3000/posts", {
+            const response = await fetch(`${BLOG_API}/posts`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -68,7 +70,7 @@ export default function PostEditor() {
                     onChange={(e) => setDescription(e.target.value)}
                 />
                 <Editor
-                    apiKey={API_KEY}
+                    apiKey={TINYMCE_API_KEY}
                     onInit={(evt, editor) => (editorRef.current = editor)}
                     initialValue="<p>This is the initial content of the editor.</p>"
                     onEditorChange={(newContent) => setContent(newContent)}

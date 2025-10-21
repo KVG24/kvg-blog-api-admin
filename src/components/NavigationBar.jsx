@@ -46,9 +46,15 @@ const LinkContainer = styled.ul`
     top: 1.5rem;
     left: 50%;
     transform: translateX(-50%);
+
+    & li {
+        min-width: 120px;
+    }
 `;
 
 const StyledLink = styled(Link)`
+    text-align: center;
+    display: block;
     padding: 0.5rem 1rem;
     color: black;
     border-radius: 3px;
