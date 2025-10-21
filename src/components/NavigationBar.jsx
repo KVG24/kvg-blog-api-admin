@@ -7,9 +7,11 @@ export default function NavigationBar({ mode }) {
         <>
             <StyledNav>
                 <LinkContainer>
-                    <li>
-                        <StyledLink to="/">Back</StyledLink>
-                    </li>
+                    {mode !== "list" && (
+                        <li>
+                            <StyledLink to="/">Back</StyledLink>
+                        </li>
+                    )}
                     {mode !== "editor" && (
                         <li>
                             <StyledLink to="/create">Create Post</StyledLink>

@@ -14,7 +14,7 @@ export default function Login() {
 
     return (
         <>
-            <NavigationBar />
+            <NavigationBar mode="list" />
             <TitleZone>
                 <h1>KVG Blog</h1>
             </TitleZone>
