@@ -15,7 +15,7 @@ export default function PostEditor() {
     const editorRef = useRef(null);
     const navigate = useNavigate();
 
-    const handleSubmit = async () => {
+    async function handleSubmit() {
         const postData = {
             title,
             published,
@@ -39,7 +39,7 @@ export default function PostEditor() {
         } catch (err) {
             console.error(err);
         }
-    };
+    }
 
     return (
         <>
@@ -72,7 +72,6 @@ export default function PostEditor() {
                 <Editor
                     apiKey={TINYMCE_API_KEY}
                     onInit={(evt, editor) => (editorRef.current = editor)}
-                    initialValue="<p>This is the initial content of the editor.</p>"
                     onEditorChange={(newContent) => setContent(newContent)}
                     init={{
                         height: 500,
