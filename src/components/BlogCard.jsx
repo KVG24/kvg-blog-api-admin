@@ -13,8 +13,10 @@ export default function BlogCard({
     published,
     setPostList,
 }) {
+    const [publishedState, setPublishedState] = useState(published);
+    const [statusChange, setStatusChange] = useState(false);
     const [deletion, setDeletion] = useState(false);
-    const { deletePost } = useAPI();
+    const { deletePost, editPost } = useAPI();
 
     const handleDelete = async () => {
         const deletedPost = await deletePost(id);
@@ -26,22 +28,75 @@ export default function BlogCard({
         }
     };
 
+    const handleStatusChange = async () => {
+        // toggle status
+        const toggledPublished = publishedState === "on" ? "" : "on";
+        const postData = {
+            id,
+            published: toggledPublished,
+        };
+
+        const updatedPost = await editPost(postData);
+        if (updatedPost) {
+            // change status in postList right away
+            setPostList((prev) =>
+                prev.map((post) =>
+                    post.id === updatedPost.id
+                        ? { ...post, published: updatedPost.published }
+                        : post
+                )
+            );
+            setPublishedState(updatedPost.published === true ? "on" : "");
+            setStatusChange(false);
+        }
+    };
+
     if (deletion) {
         return (
             <>
                 <Container>
-                    <p>Delete {title}?</p>
-                    <DeleteBtnsContainer>
-                        <DeleteBtn type="button" onClick={handleDelete}>
+                    <p>Delete "{title}"?</p>
+                    <AlertBtnsContainer>
+                        <AlertBtn $confirm type="button" onClick={handleDelete}>
                             Yes
-                        </DeleteBtn>
-                        <AbortDeleteBtn
+                        </AlertBtn>
+                        <AlertBtn
                             type="button"
                             onClick={() => setDeletion(false)}
                         >
                             No
-                        </AbortDeleteBtn>
-                    </DeleteBtnsContainer>
+                        </AlertBtn>
+                    </AlertBtnsContainer>
+                </Container>
+            </>
+        );
+    }
+
+    if (statusChange) {
+        return (
+            <>
+                <Container>
+                    {publishedState ? (
+                        <p>Unpublish "{title}"?</p>
+                    ) : (
+                        <p>Publish "{title}"?</p>
+                    )}
+
+                    <AlertBtnsContainer>
+                        <AlertBtn
+                            $confirm
+                            type="button"
+                            onClick={handleStatusChange}
+                        >
+                            Yes
+                        </AlertBtn>
+                        <AlertBtn
+                            type="button"
+                            onClick={() => setStatusChange(false)}
+                        >
+                            No
+                        </AlertBtn>
+                    </AlertBtnsContainer>
                 </Container>
             </>
         );
@@ -62,10 +117,17 @@ export default function BlogCard({
                     )}
                 </Dates>
             </Link>
-            {published ? (
-                <Status $published>Published</Status>
+            {publishedState ? (
+                <AlertStatusChangeBtn
+                    onClick={() => setStatusChange(true)}
+                    $published
+                >
+                    Published
+                </AlertStatusChangeBtn>
             ) : (
-                <Status>Unpublished</Status>
+                <AlertStatusChangeBtn onClick={() => setStatusChange(true)}>
+                    Unpublished
+                </AlertStatusChangeBtn>
             )}
             <AlertDeleteBtn type="button" onClick={() => setDeletion(true)}>
                 X
@@ -90,8 +152,8 @@ const Container = styled.div`
     width: 400px;
 
     &:hover {
-        outline: 10px solid #449b9b;
-        outline-offset: -10px;
+        outline: 5px solid #449b9b;
+        outline-offset: -5px;
     }
 
     a {
@@ -113,13 +175,20 @@ const Dates = styled.div`
     flex-direction: column;
 `;
 
-const Status = styled.p`
+const AlertStatusChangeBtn = styled.button`
+    border: none;
     position: absolute;
     bottom: 10px;
     right: 10px;
-    padding: 0.2rem 0.5rem;
+    padding: 0.3rem 0.6rem;
     border-radius: 5px;
     background-color: ${(props) => (props.$published ? "#115320" : "#681010")};
+    cursor: pointer;
+
+    &:hover {
+        outline: 1px solid white;
+        outline-offset: -1px;
+    }
 `;
 
 const AlertDeleteBtn = styled.button`
@@ -142,30 +211,17 @@ const AlertDeleteBtn = styled.button`
     }
 `;
 
-const DeleteBtnsContainer = styled.div`
+const AlertBtnsContainer = styled.div`
     display: flex;
     gap: 1rem;
 `;
 
-const DeleteBtn = styled.button`
+const AlertBtn = styled.button`
     border: none;
     border-radius: 3px;
     cursor: pointer;
     padding: 0.2rem 0.5rem;
-    background-color: #851111;
-
-    &:hover {
-        outline: 1px solid white;
-        outline-offset: -1px;
-    }
-`;
-
-const AbortDeleteBtn = styled.button`
-    border: none;
-    border-radius: 3px;
-    cursor: pointer;
-    padding: 0.2rem 0.5rem;
-    background-color: #7a7a7a;
+    background-color: ${(props) => (props.$confirm ? "#115320" : "#681010")};
 
     &:hover {
         outline: 1px solid white;
