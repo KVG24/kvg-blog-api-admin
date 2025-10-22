@@ -13,7 +13,10 @@ export default function BlogCard({
     published,
     setPostList,
 }) {
-    const [publishedState, setPublishedState] = useState(published);
+    const [publishedState, setPublishedState] = useState(
+        published === "on" || published === true ? "on" : ""
+    );
+
     const [statusChange, setStatusChange] = useState(false);
     const [deletion, setDeletion] = useState(false);
     const { deletePost, editPost } = useAPI();
