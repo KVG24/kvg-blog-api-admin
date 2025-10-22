@@ -1,10 +1,10 @@
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import useFetch from "../hooks/useFetch";
+import convertDate from "../utils/convertDate";
+import DOMPurify from "dompurify";
 import NavigationBar from "./NavigationBar";
 import BlogPostSkeletonLoader from "./BlogPostSkeletonLoader";
-import DOMPurify from "dompurify";
-import convertDate from "../utils/convertDate";
 
 const BLOG_API = import.meta.env.VITE_API_URL;
 

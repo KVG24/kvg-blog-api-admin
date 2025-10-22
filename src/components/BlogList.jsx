@@ -1,13 +1,19 @@
+import { useState, useEffect } from "react";
 import useFetch from "../hooks/useFetch";
+import styled from "styled-components";
 import BlogListSkeletonLoader from "./BlogListSkeletonLoader";
 import BlogCard from "./BlogCard";
-import styled from "styled-components";
 import NavigationBar from "./NavigationBar";
 
 const BLOG_API = import.meta.env.VITE_API_URL;
 
-export default function Login() {
+export default function BlogList() {
     const { data, loading, error } = useFetch(`${BLOG_API}/posts`);
+    const [postList, setPostList] = useState([]);
+
+    useEffect(() => {
+        if (data) setPostList(data);
+    }, [data]);
 
     if (loading) return <BlogListSkeletonLoader />;
     if (error) return <Error />;
@@ -19,8 +25,8 @@ export default function Login() {
                 <h1>KVG Blog</h1>
             </TitleZone>
             <Container>
-                {data && data.length > 0 ? (
-                    data.map((blogpost) => (
+                {postList && postList.length > 0 ? (
+                    postList.map((blogpost) => (
                         <BlogCard
                             id={blogpost.id}
                             key={blogpost.id}
@@ -29,6 +35,7 @@ export default function Login() {
                             createdAt={blogpost.createdAt}
                             updatedAt={blogpost.updatedAt}
                             published={blogpost.published}
+                            setPostList={setPostList}
                         />
                     ))
                 ) : (

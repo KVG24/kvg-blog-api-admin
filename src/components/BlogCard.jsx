@@ -1,9 +1,8 @@
-import styled from "styled-components";
-import { Link } from "react-router-dom";
 import { useState } from "react";
+import { Link } from "react-router-dom";
+import styled from "styled-components";
 import convertDate from "../utils/convertDate";
-
-const BLOG_API = import.meta.env.VITE_API_URL;
+import useAPI from "../hooks/useAPI";
 
 export default function BlogCard({
     id,
@@ -12,25 +11,20 @@ export default function BlogCard({
     createdAt,
     updatedAt,
     published,
+    setPostList,
 }) {
     const [deletion, setDeletion] = useState(false);
+    const { deletePost } = useAPI();
 
-    async function handleDelete() {
-        try {
-            const response = await fetch(`${BLOG_API}/posts/${id}`, {
-                method: "DELETE",
-                headers: {
-                    Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
-                },
-            });
-
-            if (!response.ok) throw new Error("Failed to delete post");
-
-            window.location.href = "/";
-        } catch (err) {
-            console.error(err);
+    const handleDelete = async () => {
+        const deletedPost = await deletePost(id);
+        if (deletedPost) {
+            // filter deleted post out of postList
+            setPostList((prev) =>
+                prev.filter((post) => post.id !== deletedPost.id)
+            );
         }
-    }
+    };
 
     if (deletion) {
         return (
@@ -38,7 +32,7 @@ export default function BlogCard({
                 <Container>
                     <p>Delete {title}?</p>
                     <DeleteBtnsContainer>
-                        <DeleteBtn type="button" onClick={() => handleDelete()}>
+                        <DeleteBtn type="button" onClick={handleDelete}>
                             Yes
                         </DeleteBtn>
                         <AbortDeleteBtn

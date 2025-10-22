@@ -1,11 +1,11 @@
 import { useRef, useState } from "react";
-import { Editor } from "@tinymce/tinymce-react";
-import NavigationBar from "./NavigationBar";
-import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
+import { Editor } from "@tinymce/tinymce-react";
+import styled from "styled-components";
+import NavigationBar from "./NavigationBar";
+import useAPI from "../hooks/useAPI";
 
 const TINYMCE_API_KEY = import.meta.env.VITE_TINYMCE_API_KEY;
-const BLOG_API = import.meta.env.VITE_API_URL;
 
 export default function PostEditor() {
     const [title, setTitle] = useState("");
@@ -14,8 +14,9 @@ export default function PostEditor() {
     const [content, setContent] = useState("");
     const editorRef = useRef(null);
     const navigate = useNavigate();
+    const { createPost } = useAPI();
 
-    async function handleSubmit() {
+    const handleSubmit = async () => {
         const postData = {
             title,
             published,
@@ -23,23 +24,11 @@ export default function PostEditor() {
             content,
         };
 
-        try {
-            const response = await fetch(`${BLOG_API}/posts`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
-                },
-                body: JSON.stringify(postData),
-            });
-
-            if (!response.ok) throw new Error("Failed to submit post");
-
+        const success = await createPost(postData);
+        if (success) {
             navigate("/");
-        } catch (err) {
-            console.error(err);
         }
-    }
+    };
 
     return (
         <>
