@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import convertDate from "../utils/convertDate";
 
 const BLOG_API = import.meta.env.VITE_API_URL;
 
@@ -13,17 +14,6 @@ export default function BlogCard({
     published,
 }) {
     const [deletion, setDeletion] = useState(false);
-
-    function convertDate(date) {
-        return new Date(date).toLocaleString("en-US", {
-            day: "2-digit",
-            month: "2-digit",
-            year: "numeric",
-            hour: "2-digit",
-            minute: "2-digit",
-            hour12: false,
-        });
-    }
 
     async function handleDelete() {
         try {
@@ -150,6 +140,12 @@ const AlertDeleteBtn = styled.button`
     display: flex;
     justify-content: center;
     align-items: center;
+    box-sizing: border-box;
+
+    &:hover {
+        outline: 1px solid white;
+        outline-offset: -1px;
+    }
 `;
 
 const DeleteBtnsContainer = styled.div`
@@ -163,6 +159,11 @@ const DeleteBtn = styled.button`
     cursor: pointer;
     padding: 0.2rem 0.5rem;
     background-color: #851111;
+
+    &:hover {
+        outline: 1px solid white;
+        outline-offset: -1px;
+    }
 `;
 
 const AbortDeleteBtn = styled.button`
@@ -171,4 +172,9 @@ const AbortDeleteBtn = styled.button`
     cursor: pointer;
     padding: 0.2rem 0.5rem;
     background-color: #7a7a7a;
+
+    &:hover {
+        outline: 1px solid white;
+        outline-offset: -1px;
+    }
 `;

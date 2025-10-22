@@ -4,23 +4,13 @@ import useFetch from "../hooks/useFetch";
 import NavigationBar from "./NavigationBar";
 import BlogPostSkeletonLoader from "./BlogPostSkeletonLoader";
 import DOMPurify from "dompurify";
+import convertDate from "../utils/convertDate";
 
 const BLOG_API = import.meta.env.VITE_API_URL;
 
 export default function BlogPost() {
     const { id } = useParams();
     const { data, loading, error } = useFetch(`${BLOG_API}/posts/${id}`);
-
-    function convertDate(date) {
-        return new Date(date).toLocaleString("en-US", {
-            day: "2-digit",
-            month: "2-digit",
-            year: "numeric",
-            hour: "2-digit",
-            minute: "2-digit",
-            hour12: false,
-        });
-    }
 
     if (loading) return <BlogPostSkeletonLoader />;
     if (error) return <Error />;
