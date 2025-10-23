@@ -40,7 +40,7 @@ export default function PostEditor() {
     return (
         <>
             <Container>
-                <NavigationBar mode="editor" />
+                <NavigationBar />
                 <PostInfoContainer>
                     <StyledInput
                         type="text"

@@ -12,7 +12,7 @@ export default function NavigationBar({ mode }) {
                             <StyledLink to="/">Back</StyledLink>
                         </li>
                     )}
-                    {mode !== "editor" && (
+                    {mode == "list" && (
                         <li>
                             <StyledLink to="/create">Create Post</StyledLink>
                         </li>
