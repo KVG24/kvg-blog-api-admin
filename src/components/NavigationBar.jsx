@@ -9,7 +9,7 @@ export default function NavigationBar({ mode }) {
                 <LinkContainer>
                     {mode !== "list" && (
                         <li>
-                            <StyledLink to="/">Back</StyledLink>
+                            <StyledLink to="/">All Posts</StyledLink>
                         </li>
                     )}
                     {mode == "list" && (

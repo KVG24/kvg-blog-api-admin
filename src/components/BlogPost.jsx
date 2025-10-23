@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import useFetch from "../hooks/useFetch";
 import convertDate from "../utils/convertDate";
@@ -12,12 +12,29 @@ export default function BlogPost() {
     const { id } = useParams();
     const { data, loading, error } = useFetch(`${BLOG_API}/posts/${id}`);
 
+    const navigate = useNavigate();
+
+    const handleEdit = () => {
+        navigate("/edit", {
+            state: {
+                id: data.id,
+                title: data.title,
+                description: data.description,
+                content: data.content,
+                published: data.published,
+            },
+        });
+    };
+
     if (loading) return <BlogPostSkeletonLoader />;
     if (error) return <Error />;
 
     return (
         <>
             <NavigationBar />
+            <EditPostBtn type="button" onClick={handleEdit}>
+                Edit Post
+            </EditPostBtn>
             <Container>
                 <TitleZone>
                     <h1>{data.title}</h1>
@@ -81,4 +98,30 @@ const TextZone = styled.div`
     max-width: 1000px;
     width: 100%;
     position: relative;
+`;
+
+const EditPostBtn = styled.button`
+    border: none;
+    text-align: center;
+    display: block;
+    padding: 0.5rem 1rem;
+    color: black;
+    border-radius: 3px;
+    cursor: pointer;
+    background-color: #449b9b;
+    transition: all 0.1s ease-in-out;
+    font-weight: 900;
+    position: absolute;
+    top: 1.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+
+    @media (max-width: 500px) {
+        padding: 0.2rem 0.5rem;
+    }
+
+    &:hover {
+        background-color: black;
+        color: #449b9b;
+    }
 `;
