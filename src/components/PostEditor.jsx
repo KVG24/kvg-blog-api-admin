@@ -22,7 +22,7 @@ export default function PostEditor() {
     const handleSubmit = async () => {
         const postData = {
             title,
-            published,
+            published: published ? "on" : "",
             description,
             content,
         };
@@ -56,8 +56,8 @@ export default function PostEditor() {
                             type="checkbox"
                             name="published"
                             $size="1rem"
-                            onChange={(e) => setPublished(e.target.checked)}
                             checked={published}
+                            onChange={(e) => setPublished(e.target.checked)}
                         />
                     </div>
                 </PostInfoContainer>
