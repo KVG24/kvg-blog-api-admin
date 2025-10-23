@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { Editor } from "@tinymce/tinymce-react";
 import styled from "styled-components";
 import NavigationBar from "./NavigationBar";
@@ -8,13 +8,16 @@ import useAPI from "../hooks/useAPI";
 const TINYMCE_API_KEY = import.meta.env.VITE_TINYMCE_API_KEY;
 
 export default function PostEditor() {
-    const [title, setTitle] = useState("");
-    const [published, setPublished] = useState("on");
-    const [description, setDescription] = useState("");
-    const [content, setContent] = useState("");
+    const location = useLocation();
+    const data = location.state || {};
+
+    const [title, setTitle] = useState(data.title || "");
+    const [published, setPublished] = useState(data.published || false);
+    const [description, setDescription] = useState(data.description || "");
+    const [content, setContent] = useState(data.content || "");
     const editorRef = useRef(null);
     const navigate = useNavigate();
-    const { createPost } = useAPI();
+    const { createPost, editPost } = useAPI();
 
     const handleSubmit = async () => {
         const postData = {
@@ -24,7 +27,11 @@ export default function PostEditor() {
             content,
         };
 
-        const success = await createPost(postData);
+        // check data.id to decide whether to call "create" or "edit" API
+        const success = data.id
+            ? await editPost({ ...postData, id: data.id })
+            : await createPost(postData);
+
         if (success) {
             navigate("/");
         }
@@ -39,6 +46,8 @@ export default function PostEditor() {
                         type="text"
                         name="title"
                         placeholder="Post title"
+                        value={title}
+                        required
                         onChange={(e) => setTitle(e.target.value)}
                     />
                     <div>
@@ -56,11 +65,14 @@ export default function PostEditor() {
                     type="text"
                     name="description"
                     placeholder="Short description"
+                    value={description}
                     onChange={(e) => setDescription(e.target.value)}
+                    required
                 />
                 <Editor
                     apiKey={TINYMCE_API_KEY}
                     onInit={(evt, editor) => (editorRef.current = editor)}
+                    value={content}
                     onEditorChange={(newContent) => setContent(newContent)}
                     init={{
                         height: 500,
@@ -96,7 +108,7 @@ export default function PostEditor() {
                     }}
                 />
                 <SubmitBtn type="button" onClick={handleSubmit}>
-                    Submit Post
+                    Submit
                 </SubmitBtn>
             </Container>
         </>

@@ -32,6 +32,7 @@ export default function BlogList() {
                             key={blogpost.id}
                             title={blogpost.title}
                             description={blogpost.description}
+                            content={blogpost.content}
                             createdAt={blogpost.createdAt}
                             updatedAt={blogpost.updatedAt}
                             published={blogpost.published}

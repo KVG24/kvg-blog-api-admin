@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import convertDate from "../utils/convertDate";
 import useAPI from "../hooks/useAPI";
@@ -8,6 +8,7 @@ export default function BlogCard({
     id,
     title,
     description,
+    content,
     createdAt,
     updatedAt,
     published,
@@ -16,10 +17,22 @@ export default function BlogCard({
     const [publishedState, setPublishedState] = useState(
         published === "on" || published === true ? "on" : ""
     );
-
-    const [statusChange, setStatusChange] = useState(false);
-    const [deletion, setDeletion] = useState(false);
+    const [statusChangeAlert, setStatusChangeAlert] = useState(false);
+    const [deletionAlert, setDeletionAlert] = useState(false);
     const { deletePost, editPost } = useAPI();
+    const navigate = useNavigate();
+
+    const handleEdit = () => {
+        navigate("/edit", {
+            state: {
+                id,
+                title,
+                description,
+                content,
+                published,
+            },
+        });
+    };
 
     const handleDelete = async () => {
         const deletedPost = await deletePost(id);
@@ -50,11 +63,11 @@ export default function BlogCard({
                 )
             );
             setPublishedState(updatedPost.published === true ? "on" : "");
-            setStatusChange(false);
+            setStatusChangeAlert(false);
         }
     };
 
-    if (deletion) {
+    if (deletionAlert) {
         return (
             <>
                 <Container>
@@ -65,7 +78,7 @@ export default function BlogCard({
                         </AlertBtn>
                         <AlertBtn
                             type="button"
-                            onClick={() => setDeletion(false)}
+                            onClick={() => setDeletionAlert(false)}
                             $green
                         >
                             No
@@ -76,7 +89,7 @@ export default function BlogCard({
         );
     }
 
-    if (statusChange) {
+    if (statusChangeAlert) {
         return (
             <>
                 <Container>
@@ -96,7 +109,7 @@ export default function BlogCard({
                         </AlertBtn>
                         <AlertBtn
                             type="button"
-                            onClick={() => setStatusChange(false)}
+                            onClick={() => setStatusChangeAlert(false)}
                         >
                             No
                         </AlertBtn>
@@ -123,19 +136,29 @@ export default function BlogCard({
             </Link>
             {publishedState ? (
                 <AlertStatusChangeBtn
-                    onClick={() => setStatusChange(true)}
+                    onClick={() => setStatusChangeAlert(true)}
                     $published
                 >
                     Published
                 </AlertStatusChangeBtn>
             ) : (
-                <AlertStatusChangeBtn onClick={() => setStatusChange(true)}>
+                <AlertStatusChangeBtn
+                    onClick={() => setStatusChangeAlert(true)}
+                >
                     Unpublished
                 </AlertStatusChangeBtn>
             )}
-            <AlertDeleteBtn type="button" onClick={() => setDeletion(true)}>
-                X
-            </AlertDeleteBtn>
+            <PostActionsBtnsContainer>
+                <EditPostBtn type="button" onClick={handleEdit}>
+                    Edit
+                </EditPostBtn>
+                <AlertDeleteBtn
+                    type="button"
+                    onClick={() => setDeletionAlert(true)}
+                >
+                    X
+                </AlertDeleteBtn>
+            </PostActionsBtnsContainer>
         </Container>
     );
 }
@@ -186,8 +209,34 @@ const AlertStatusChangeBtn = styled.button`
     right: 10px;
     padding: 0.3rem 0.6rem;
     border-radius: 5px;
-    background-color: ${(props) => (props.$published ? "#115320" : "#681010")};
+    background-color: ${(props) => (props.$published ? "#115320" : "#851111")};
     cursor: pointer;
+
+    &:hover {
+        outline: 1px solid white;
+        outline-offset: -1px;
+    }
+`;
+
+const PostActionsBtnsContainer = styled.div`
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+`;
+
+const EditPostBtn = styled.button`
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    padding: 0.2rem 0.5rem;
+    background-color: #575757;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
     &:hover {
         outline: 1px solid white;
@@ -200,14 +249,10 @@ const AlertDeleteBtn = styled.button`
     border-radius: 3px;
     cursor: pointer;
     padding: 0.2rem 0.5rem;
-    position: absolute;
-    top: 10px;
-    right: 10px;
     background-color: #851111;
     display: flex;
     justify-content: center;
     align-items: center;
-    box-sizing: border-box;
 
     &:hover {
         outline: 1px solid white;
@@ -225,7 +270,7 @@ const AlertBtn = styled.button`
     border-radius: 3px;
     cursor: pointer;
     padding: 0.2rem 0.5rem;
-    background-color: ${(props) => (props.$green ? "#115320" : "#681010")};
+    background-color: ${(props) => (props.$green ? "#115320" : "#851111")};
 
     &:hover {
         outline: 1px solid white;

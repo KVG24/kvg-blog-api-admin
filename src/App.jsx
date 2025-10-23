@@ -35,6 +35,14 @@ export default function App() {
                         </ProtectedRoute>
                     }
                 />
+                <Route
+                    path="/edit"
+                    element={
+                        <ProtectedRoute>
+                            <PostEditor />
+                        </ProtectedRoute>
+                    }
+                />
                 <Route path="/login" element={<Login />} />
                 <Route path="*" element={<ErrorPage />} />
             </Routes>
