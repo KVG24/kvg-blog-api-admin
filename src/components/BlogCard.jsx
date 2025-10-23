@@ -60,12 +60,13 @@ export default function BlogCard({
                 <Container>
                     <p>Delete "{title}"?</p>
                     <AlertBtnsContainer>
-                        <AlertBtn $confirm type="button" onClick={handleDelete}>
+                        <AlertBtn type="button" onClick={handleDelete}>
                             Yes
                         </AlertBtn>
                         <AlertBtn
                             type="button"
                             onClick={() => setDeletion(false)}
+                            $green
                         >
                             No
                         </AlertBtn>
@@ -87,7 +88,7 @@ export default function BlogCard({
 
                     <AlertBtnsContainer>
                         <AlertBtn
-                            $confirm
+                            $green
                             type="button"
                             onClick={handleStatusChange}
                         >
@@ -224,7 +225,7 @@ const AlertBtn = styled.button`
     border-radius: 3px;
     cursor: pointer;
     padding: 0.2rem 0.5rem;
-    background-color: ${(props) => (props.$confirm ? "#115320" : "#681010")};
+    background-color: ${(props) => (props.$green ? "#115320" : "#681010")};
 
     &:hover {
         outline: 1px solid white;
