@@ -21,27 +21,29 @@ export default function BlogList() {
     return (
         <>
             <NavigationBar mode="list" />
-            <TitleZone>
-                <h1>KVG Blog</h1>
-            </TitleZone>
             <Container>
-                {postList && postList.length > 0 ? (
-                    postList.map((blogpost) => (
-                        <BlogCard
-                            id={blogpost.id}
-                            key={blogpost.id}
-                            title={blogpost.title}
-                            description={blogpost.description}
-                            content={blogpost.content}
-                            createdAt={blogpost.createdAt}
-                            updatedAt={blogpost.updatedAt}
-                            published={blogpost.published}
-                            setPostList={setPostList}
-                        />
-                    ))
-                ) : (
-                    <p>No items available</p>
-                )}
+                <TitleZone>
+                    <h1>KVG Blog</h1>
+                </TitleZone>
+                <PostContainer>
+                    {postList && postList.length > 0 ? (
+                        postList.map((blogpost) => (
+                            <BlogCard
+                                id={blogpost.id}
+                                key={blogpost.id}
+                                title={blogpost.title}
+                                description={blogpost.description}
+                                content={blogpost.content}
+                                createdAt={blogpost.createdAt}
+                                updatedAt={blogpost.updatedAt}
+                                published={blogpost.published}
+                                setPostList={setPostList}
+                            />
+                        ))
+                    ) : (
+                        <p>No items available</p>
+                    )}
+                </PostContainer>
             </Container>
         </>
     );
@@ -58,6 +60,8 @@ const Container = styled.div`
 `;
 
 const TitleZone = styled.div`
+    border-radius: 5px;
+    max-width: 1100px;
     width: 100%;
     background-color: #3d3d3d;
     display: flex;
@@ -65,7 +69,16 @@ const TitleZone = styled.div`
     justify-content: center;
     align-items: center;
     padding: 2rem 0;
-    border-radius: 5px;
+    border: 1px solid #3d3d3d;
+    box-shadow: 0px 0px 10px 5px #0f0f0f;
+`;
+
+const PostContainer = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
 `;
 
 const Error = styled.p`

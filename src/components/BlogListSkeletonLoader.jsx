@@ -5,35 +5,27 @@ export default function BlogListSkeletonLoader() {
     return (
         <>
             <NavigationBar />
-            <TitleZone>
-                <h1>KVG Blog</h1>
-            </TitleZone>
             <Container>
-                {Array.from({ length: 6 }).map((_, i) => (
-                    <CardSkeleton key={i}>
-                        <SkeletonBlock $width="100px" $height="18px" />
-                        <SkeletonBlock $width="300px" $height="40px" />
-                        <SkeletonBlock
-                            $width="100px"
-                            $height="18px"
-                            $align="flex-start"
-                        />
-                    </CardSkeleton>
-                ))}
+                <TitleZone>
+                    <h1>KVG Blog</h1>
+                </TitleZone>
+                <PostContainer>
+                    {Array.from({ length: 6 }).map((_, i) => (
+                        <CardSkeleton key={i}>
+                            <SkeletonBlock $width="100px" $height="18px" />
+                            <SkeletonBlock $width="300px" $height="40px" />
+                            <SkeletonBlock
+                                $width="100px"
+                                $height="18px"
+                                $align="flex-start"
+                            />
+                        </CardSkeleton>
+                    ))}
+                </PostContainer>
             </Container>
         </>
     );
 }
-
-const TitleZone = styled.div`
-    width: 100%;
-    background-color: #3d3d3d;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 2rem 0;
-    border-radius: 5px;
-`;
 
 const Container = styled.div`
     max-width: 1000px;
@@ -43,6 +35,28 @@ const Container = styled.div`
     gap: 1rem;
     justify-content: center;
     align-items: center;
+`;
+
+const TitleZone = styled.div`
+    border-radius: 5px;
+    max-width: 1100px;
+    width: 100%;
+    background-color: #3d3d3d;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem 0;
+    border: 1px solid #3d3d3d;
+    box-shadow: 0px 0px 10px 5px #0f0f0f;
+`;
+
+const PostContainer = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
 `;
 
 const CardSkeleton = styled.div`

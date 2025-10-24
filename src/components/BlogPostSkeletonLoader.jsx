@@ -8,7 +8,7 @@ export default function BlogPostSkeletonLoader() {
             <Container>
                 <TitleZone>
                     <SkeletonBlock
-                        $width="500px"
+                        $width="400px"
                         $height="50px"
                         $margin="1.4rem 0"
                     />
@@ -72,14 +72,17 @@ const Container = styled.div`
 
 const TitleZone = styled.div`
     border-radius: 5px;
+    max-width: 1100px;
     width: 100%;
     background-color: #3d3d3d;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     padding: 2rem 0;
+    border: 1px solid #3d3d3d;
+    box-shadow: 0px 0px 10px 5px #0f0f0f;
 `;
-
 const TextZone = styled.div`
     padding: 1rem;
     width: 100%;

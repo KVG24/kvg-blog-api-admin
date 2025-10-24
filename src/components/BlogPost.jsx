@@ -76,6 +76,7 @@ const Error = styled.p`
 
 const TitleZone = styled.div`
     border-radius: 5px;
+    max-width: 1100px;
     width: 100%;
     background-color: #3d3d3d;
     display: flex;
@@ -83,6 +84,8 @@ const TitleZone = styled.div`
     justify-content: center;
     align-items: center;
     padding: 2rem 0;
+    border: 1px solid #3d3d3d;
+    box-shadow: 0px 0px 10px 5px #0f0f0f;
 `;
 
 const Dates = styled.div`
@@ -90,7 +93,7 @@ const Dates = styled.div`
     display: flex;
     flex-direction: column;
     position: relative;
-    top: -70px;
+    top: -75px;
 `;
 
 const TextZone = styled.div`
