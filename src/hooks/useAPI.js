@@ -61,5 +61,27 @@ export default function useAPI() {
         }
     };
 
-    return { createPost, deletePost, editPost };
+    const createComment = async (postId, commentData) => {
+        try {
+            const response = await fetch(
+                `${BLOG_API}/posts/${postId}/comments`,
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(commentData),
+                }
+            );
+
+            if (!response.ok) throw new Error("Failed to create comment");
+
+            return await response.json();
+        } catch (err) {
+            console.error(err);
+            return null;
+        }
+    };
+
+    return { createPost, deletePost, editPost, createComment };
 }

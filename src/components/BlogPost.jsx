@@ -6,12 +6,14 @@ import convertDate from "../utils/convertDate";
 import DOMPurify from "dompurify";
 import NavigationBar from "./NavigationBar";
 import BlogPostSkeletonLoader from "./BlogPostSkeletonLoader";
+import useAPI from "../hooks/useAPI";
 
 const BLOG_API = import.meta.env.VITE_API_URL;
 
 export default function BlogPost() {
     const { id } = useParams();
     const { data, loading, error } = useFetch(`${BLOG_API}/posts/${id}`);
+    const { createComment } = useAPI();
     const [commenterName, setCommenterName] = useState("");
     const [commentText, setCommentText] = useState("");
     const [comments, setComments] = useState([]);
@@ -29,17 +31,7 @@ export default function BlogPost() {
         const commentData = { creator: commenterName, text: commentText };
 
         try {
-            const response = await fetch(`${BLOG_API}/posts/${id}/comments`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(commentData),
-            });
-
-            if (!response.ok) throw new Error("Failed to create comment");
-
-            const newComment = await response.json();
+            const newComment = await createComment(id, commentData);
 
             // Append new comment to local state
             setComments((prev) => [...prev, newComment]);
