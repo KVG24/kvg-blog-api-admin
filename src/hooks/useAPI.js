@@ -83,5 +83,26 @@ export default function useAPI() {
         }
     };
 
-    return { createPost, deletePost, editPost, createComment };
+    const deleteComment = async (postId, commentId) => {
+        try {
+            const response = await fetch(
+                `${BLOG_API}/posts/${postId}/comments/${commentId}`,
+                {
+                    method: "DELETE",
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            );
+
+            if (!response.ok) throw new Error("Failed to delete comment");
+
+            return await response.json();
+        } catch (err) {
+            console.error(err);
+            return null;
+        }
+    };
+
+    return { createPost, deletePost, editPost, createComment, deleteComment };
 }

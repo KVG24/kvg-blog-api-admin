@@ -99,6 +99,7 @@ export default function BlogPost() {
                                     text={comment.text}
                                     createdAt={comment.createdAt}
                                     setComments={setComments}
+                                    postId={id}
                                 />
                             ))
                         ) : (

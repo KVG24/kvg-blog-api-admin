@@ -37,7 +37,7 @@ export default function BlogCard({
     const handleDelete = async () => {
         const deletedPost = await deletePost(id);
         if (deletedPost) {
-            // filter deleted post out of postList
+            // filter deleted post out of postList state without reloading the page
             setPostList((prev) =>
                 prev.filter((post) => post.id !== deletedPost.id)
             );
