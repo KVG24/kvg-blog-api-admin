@@ -2,11 +2,12 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import styled from "styled-components";
 import useFetch from "../hooks/useFetch";
+import useAPI from "../hooks/useAPI";
 import convertDate from "../utils/convertDate";
 import DOMPurify from "dompurify";
 import NavigationBar from "./NavigationBar";
 import BlogPostSkeletonLoader from "./BlogPostSkeletonLoader";
-import useAPI from "../hooks/useAPI";
+import Comment from "./Comment";
 
 const BLOG_API = import.meta.env.VITE_API_URL;
 
@@ -91,15 +92,14 @@ export default function BlogPost() {
                     <CommentsContainer>
                         {comments.length > 0 ? (
                             comments.map((comment) => (
-                                <CommentBlock key={comment.id}>
-                                    <p>
-                                        <strong>{comment.creator}:</strong>
-                                    </p>
-                                    <CommentText>{comment.text}</CommentText>
-                                    <CommentDate>
-                                        {convertDate(comment.createdAt)}
-                                    </CommentDate>
-                                </CommentBlock>
+                                <Comment
+                                    key={comment.id}
+                                    id={comment.id}
+                                    creator={comment.creator}
+                                    text={comment.text}
+                                    createdAt={comment.createdAt}
+                                    setComments={setComments}
+                                />
                             ))
                         ) : (
                             <p>No comments yet</p>
@@ -262,26 +262,4 @@ const CommentsContainer = styled.div`
     display: flex;
     flex-direction: column;
     gap: 1rem;
-`;
-
-const CommentBlock = styled.div`
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    border: 1px solid #747474;
-    padding: 0.5rem;
-    border-radius: 5px;
-`;
-
-const CommentText = styled.p`
-    word-break: break-word;
-    background-color: #555555;
-    padding: 0.5rem;
-    border-radius: 5px;
-    white-space: pre-wrap;
-`;
-
-const CommentDate = styled.p`
-    color: #bebebe;
-    font-size: 0.8rem;
 `;
