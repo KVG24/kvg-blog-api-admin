@@ -104,5 +104,35 @@ export default function useAPI() {
         }
     };
 
-    return { createPost, deletePost, editPost, createComment, deleteComment };
+    const editComment = async (postId, commentData) => {
+        try {
+            const response = await fetch(
+                `${BLOG_API}/posts/${postId}/comments/${commentData.id}`,
+                {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`,
+                    },
+                    body: JSON.stringify(commentData),
+                }
+            );
+
+            if (!response.ok) throw new Error("Failed to edit comment");
+
+            return await response.json();
+        } catch (err) {
+            console.error(err);
+            return null;
+        }
+    };
+
+    return {
+        createPost,
+        deletePost,
+        editPost,
+        createComment,
+        deleteComment,
+        editComment,
+    };
 }
